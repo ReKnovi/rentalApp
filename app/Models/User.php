@@ -25,7 +25,6 @@ class User extends Authenticatable implements JWTSubject
         'role',
         'google_id',
         'password',
-        'kyc_status',
     ];
 
     /**
@@ -64,5 +63,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+        public function kycs()
+    {
+        return $this->hasMany(Kyc::class);
+    }
+
+    public function latestKyc()
+    {
+        return $this->hasOne(Kyc::class)->latest();
     }
 }

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['tenant', 'landlord', 'admin'])->default('tenant');
             $table->string('google_id')->nullable();
-            $table->enum('kyc_status', ['pending', 'verified', 'failed'])->default('pending');
             $table->rememberToken();
             $table->timestamps();
         });

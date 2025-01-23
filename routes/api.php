@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminKycController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KycController;
+use App\Http\Controllers\LandlordController;
 use App\Http\Middleware\AuthenticateJWT;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Http\Request;
@@ -34,3 +35,11 @@ Route::get('/user', function (Request $request) {
         Route::post('/admin/kyc/approve/{kyc_id}', [AdminKycController::class, 'approve']);
         Route::post('/admin/kyc/reject/{kyc_id}', [AdminKycController   ::class, 'reject']);
     });
+
+    Route::group(['middleware' => ['auth.jwt', 'role:landlord']], function () {
+        Route::post('/landlord/store-rooms', [LandlordController::class, 'store']); // Add a room
+        Route::get('/landlord/rooms', [LandlordController::class, 'index']); // View landlord's rooms
+        Route::post('/landlord/update-rooms/{id}', [LandlordController::class, 'update']); // Edit a room
+        Route::delete('/landlord/rooms/{id}', [LandlordController::class, 'destroy']); // Delete a room
+    });
+

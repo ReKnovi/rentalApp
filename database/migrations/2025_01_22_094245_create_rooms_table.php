@@ -43,6 +43,8 @@ return new class extends Migration {
             $table->string('condition')->nullable(); // Room condition (e.g., "newly renovated")
             $table->date('available_from')->nullable(); // When the room becomes available
             $table->date('available_until')->nullable(); // Until when the room is available
+            $table->json('rental_rules')->nullable();
+            $table->timestamp('highlighted_until')->nullable();
             $table->timestamps(); // Created and updated timestamps
         });
     }

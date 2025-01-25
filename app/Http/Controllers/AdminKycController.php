@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kyc;
+use Illuminate\Support\Facades\DB;
 use Exception;
 
 class AdminKycController extends Controller
@@ -22,14 +23,17 @@ class AdminKycController extends Controller
     // Approve KYC
     public function approve($kyc_id)
     {
+        DB::beginTransaction();
         try {
             $kyc = Kyc::findOrFail($kyc_id);
 
             $kyc->status = 'approved';
             $kyc->save();
 
+            DB::commit();
             return response()->json(['message' => 'KYC approved successfully.', 'kyc' => $kyc]);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => 'Failed to approve KYC.', 'message' => $e->getMessage()], 500);
         }
     }
@@ -37,6 +41,7 @@ class AdminKycController extends Controller
     // Reject KYC
     public function reject(Request $request, $kyc_id)
     {
+        DB::beginTransaction();
         try {
             $request->validate([
                 'reason' => 'required|string|max:255',
@@ -48,8 +53,10 @@ class AdminKycController extends Controller
             $kyc->rejection_reason = $request->reason; // Add a rejection reason
             $kyc->save();
 
+            DB::commit();
             return response()->json(['message' => 'KYC rejected.', 'kyc' => $kyc]);
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => 'Failed to reject KYC.', 'message' => $e->getMessage()], 500);
         }
     }

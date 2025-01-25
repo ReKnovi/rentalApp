@@ -44,6 +44,7 @@ class StoreRoomRequest extends FormRequest
             'condition' => 'nullable|string',
             'available_from' => 'nullable|date',
             'available_until' => 'nullable|date',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

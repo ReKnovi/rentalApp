@@ -74,4 +74,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Kyc::class)->latest();
     }
+
+        public function savedRooms()
+    {
+        return $this->belongsToMany(Room::class, 'saved_rooms', 'user_id', 'room_id')->withTimestamps();
+    }
+
 }
